@@ -1,4 +1,4 @@
-name: UiddDex-Desktop CI
+name: firoDex-Desktop CI
 
 on:
   workflow_dispatch:
