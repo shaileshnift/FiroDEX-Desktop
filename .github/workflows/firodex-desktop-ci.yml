@@ -192,21 +192,6 @@ jobs:
       - name: Create vcpkg dir
         run: mkdir -p ${{ github.workspace }}/b/vcpkg_cache
 
-      - name: Patch libsodium hash dynamically
-        shell: python
-        run: |
-          import os
-          portfile = os.path.join(os.environ['GITHUB_WORKSPACE'], 'ci_tools_atomic_dex', 'vcpkg-repo', 'ports', 'libsodium', 'portfile.cmake')
-          if os.path.exists(portfile):
-              with open(portfile, 'r', encoding='utf-8') as f:
-                  c = f.read()
-              c = c.replace('727fe50a5fb1df86ec5d807770f408a52609cbeb8510b4f4183b2a35a537905719bdb6348afcb103ff00ce946a8094ac9559b6e3e5b2ccc2a2d0c08f75577eeb', '269bda48307db8b7b4bd734704bc49add71f947704109416f9e9d2304bc60a39fa33ae201ccac54721bdce7d521067fc3d75022044557ab6cb37890b03505411')
-              with open(portfile, 'w', encoding='utf-8') as f:
-                  f.write(c)
-              print("libsodium hash patched successfully!")
-          else:
-              print("Could not find portfile.cmake")
-              
       - name: vcpkg deps (All)
         uses: lukka/run-vcpkg@v11
         with:
