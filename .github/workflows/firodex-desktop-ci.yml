@@ -12,13 +12,15 @@ env:
   DEX_DISPLAY_NAME: "Uidd Dex"
   DEX_COMPANY: "Uidd"
   DEX_VERSION: "0.7.0"
-  DEX_WEBSITE: "https://uidd.org/"
+  DEX_WEBSITE: "https://udex.org/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_FEATURE_FLAG: manifest
   VCPKG_ENABLE_BINARY_CACHING: true
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
   RUN_VCPKG_ROOT: ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo
   VCPKG_ROOT: ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo
+  # Add this global overlay port definition:
+  VCPKG_OVERLAY_PORTS: ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports
 
 jobs:
 
