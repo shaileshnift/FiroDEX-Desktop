@@ -1,28 +1,26 @@
-name: FiroDex-Desktop CI
+name: firoDex-Desktop CI
 
 on:
-  pull_request:
-    types: [ opened, synchronize, reopened ]
-  push:
-    branches:
-      - dev
-      - master
-  schedule:
-    - cron: '0 0 * * 1'
+  workflow_dispatch:
+  
 
 env:
-  DEX_API: "mm2_firo"
+  DEX_API: "mm2_uidd"
   DEX_RPCPORT: 7653
   DEX_RPC: "http://127.0.0.1:7653"
-  DEX_PROJECT_NAME: "firodex"
-  DEX_DISPLAY_NAME: "Firo Dex"
-  DEX_COMPANY: "Firo"
+  DEX_PROJECT_NAME: "uidddex"
+  DEX_DISPLAY_NAME: "Uidd Dex"
+  DEX_COMPANY: "Uidd"
   DEX_VERSION: "0.7.0"
-  DEX_WEBSITE: "https://firo.org/"
+  DEX_WEBSITE: "https://udex.org/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
+  VCPKG_FEATURE_FLAG: manifest
+  VCPKG_ENABLE_BINARY_CACHING: true
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
-  RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo
-  VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo
+  RUN_VCPKG_ROOT: ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo
+  VCPKG_ROOT: ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo
+  # Add this global overlay port definition:
+  VCPKG_OVERLAY_PORTS: ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports
 
 jobs:
 
@@ -44,13 +42,13 @@ jobs:
 
         include:
           - name: ubuntu-release
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             qt: '5.15.2'
             type: 'Release'
             host: 'linux'
 
           - name: ubuntu-debug
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             qt: '5.15.2'
             type: 'Debug'
             host: 'linux'
@@ -190,19 +188,26 @@ jobs:
       - name: Upload env variable for vpkg (Linux)
         if: runner.os == 'Linux'
         run: |
-          echo "CXX=clang++-12" >> $GITHUB_ENV
-          echo "CC=clang-12" >> $GITHUB_ENV
+          echo "CXX=clang++-13" >> $GITHUB_ENV
+          echo "CC=clang-13" >> $GITHUB_ENV
+
+      - name: Create vcpkg dir
+        run: mkdir -p ${{ github.workspace }}/b/vcpkg_cache
 
       - name: vcpkg deps (All)
-        uses: lukka/run-vcpkg@v10
+        uses: lukka/run-vcpkg@v11
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
+          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}-v2
           vcpkgJsonGlob: 'vcpkg.json'
-
+          runVcpkgInstall: true
+        env:
+          VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
+          VCPKG_FEATURE_FLAG: manifest
+          VCPKG_ENABLE_BINARY_CACHING: true
 
       # - name: import code signing certificates (macos)
-      #   if: runner.os == 'macOS'  && 'firoorg/FiroDEX-Desktop' == github.repository
+      #   if: runner.os == 'macOS'  && 'uiddorg/UiddDEX-Desktop' == github.repository
       #   uses: Apple-Actions/import-codesign-certs@v1
       #   with:
       #     keychain: ${{ github.run_id }}
@@ -211,7 +216,7 @@ jobs:
       #     p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
       # - name: import installer code signing certificates (macos)
-      #   if: runner.os == 'macOS'  && 'firoorg/FiroDEX-Desktop' == github.repository
+      #   if: runner.os == 'macOS'  && 'uiddorg/UiddDEX-Desktop' == github.repository
       #   uses: apple-actions/import-codesign-certs@v1
       #   with:
       #     keychain: ${{ github.run_id }}
@@ -255,8 +260,8 @@ jobs:
           export PATH=$HOME/.nimble/bin:$PATH
           #export CXXFLAGS=-stdlib=libc++
           #export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-12
-          export CC=clang-12
+          export CXX=clang++-13
+          export CC=clang-13
           cd ci_tools_atomic_dex
           nimble build -y
 
@@ -264,7 +269,7 @@ jobs:
           ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
 
-      - name: Build FiroDEX (Windows)
+      - name: Build UiddDEX (Windows)
         if: runner.os == 'Windows'
         shell: powershell
         run: |
@@ -285,7 +290,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_zstd }}
           path: ./bundled/linux/${{ env.target_name_zstd }}
@@ -293,7 +298,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/linux/${{ env.target_name_zip }}
@@ -301,7 +306,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_appimage }}
           path: ./bundled/linux/${{ env.target_name_appimage }}
@@ -315,7 +320,7 @@ jobs:
 
       - name: Upload artifacts (MacOS dmg)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_dmg }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
@@ -323,7 +328,7 @@ jobs:
 
       - name: Upload artifacts (MacOS installer)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
@@ -338,7 +343,7 @@ jobs:
 
       - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}.zip
@@ -346,7 +351,7 @@ jobs:
 
       - name: Upload artifacts (Windows installer)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
@@ -357,7 +362,7 @@ jobs:
       - name: Running Tests (Linux)
         working-directory: ci_tools_atomic_dex
         continue-on-error: true
-        if: runner.os == 'Linux' && 'firoorg/FiroDEX-Desktop' == github.repository
+        if: runner.os == 'Linux' && 'uiddorg/UiddDEX-Desktop' == github.repository
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
@@ -366,8 +371,8 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
-          export CXX=clang++-12
-          export CC=clang-12
+          export CXX=clang++-13
+          export CC=clang-13
           #echo "Running tests"
           #./ci_tools_atomic_dex tests ${{ matrix.type }}
           #cd build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
@@ -376,7 +381,7 @@ jobs:
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
         continue-on-error: true
-        if: runner.os == 'macOS' &&  'firoorg/FiroDEX-Desktop' == github.repository
+        if: runner.os == 'macOS' &&  'uiddorg/UiddDEX-Desktop' == github.repository
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
@@ -400,7 +405,7 @@ jobs:
       - name: Running Tests (Windows)
         shell: powershell
         continue-on-error: true
-        if: runner.os == 'Windows' && 'firoorg/FiroDEX-Desktop' == github.repository
+        if: runner.os == 'Windows' && 'uiddorg/UiddDEX-Desktop' == github.repository
         run: |
           #echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
