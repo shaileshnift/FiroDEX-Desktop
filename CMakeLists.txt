@@ -110,7 +110,10 @@ configure_icon_osx(${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/macos/dex-logo.icns
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-
+##! Force CMake to find libwally headers installed by the linux/osx scripts
+if (UNIX)
+    include_directories("/usr/local/include")
+endif ()
 add_subdirectory(src)
 
 # Adds Qaterial hot reload to main executable
