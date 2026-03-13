@@ -258,8 +258,11 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
-          #export CXXFLAGS=-stdlib=libc++
-          #export LDFLAGS=-stdlib=libc++
+          
+          # Add these two lines to force the compiler to see libwally headers:
+          export CXXFLAGS="-I/usr/local/include"
+          export CFLAGS="-I/usr/local/include"
+          
           export CXX=clang++-13
           export CC=clang-13
           cd ci_tools_atomic_dex
