@@ -52,7 +52,7 @@ cd cmake-3.19.0-rc3-Linux-x86_64
 sudo cp -r * /usr/
 sudo cp -r * /usr/local/
 cmake --version
-cd ..
+#cd ..
 # get libwally
 # get libwally
 git clone -b v0.8.5 https://github.com/KomodoPlatform/libwally-core.git --recurse-submodules
