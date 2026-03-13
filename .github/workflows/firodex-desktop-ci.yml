@@ -194,6 +194,14 @@ jobs:
       - name: Create vcpkg dir
         run: mkdir -p ${{ github.workspace }}/b/vcpkg_cache
 
+      - name: Force Update vcpkg (Windows MSYS2 Fix)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          cd ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo
+          git fetch origin
+          git checkout origin/master
+          
       - name: vcpkg deps (All)
         uses: lukka/run-vcpkg@v11
         with:
