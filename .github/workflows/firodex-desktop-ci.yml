@@ -194,13 +194,14 @@ jobs:
       - name: Create vcpkg dir
         run: mkdir -p ${{ github.workspace }}/b/vcpkg_cache
 
-      - name: Force Update vcpkg (Windows MSYS2 Fix)
+      - name: Manual MSYS2 pkgconf download
         if: runner.os == 'Windows'
-        shell: bash
+        shell: powershell
         run: |
-          cd ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo
-          git fetch origin
-          git checkout origin/master
+          $dir = "${{ github.workspace }}\ci_tools_atomic_dex\vcpkg-repo\downloads"
+          if (!(Test-Path $dir)) { New-Item -ItemType Directory -Path $dir }
+          # Download from a working mirror or your own storage
+          Invoke-WebRequest -Uri "https://mirror.msys2.org/mingw/mingw64/mingw-w64-x86_64-pkgconf-1~2.5.1-1-any.pkg.tar.zst" -OutFile "$dir\mingw-w64-x86_64-pkgconf-1~2.1.0-1-any.pkg.tar.zst"
           
       - name: vcpkg deps (All)
         uses: lukka/run-vcpkg@v11
