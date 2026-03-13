@@ -111,11 +111,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 ##! Force CMake to find libwally headers installed by the linux/osx scripts
-if (UNIX)
-    include_directories("/usr/local/include")
-    # Libwally also relies on secp256k1, so we include its headers too just in case
-    include_directories("${CMAKE_SOURCE_DIR}/libwally-core/src/secp256k1/include")
-endif ()
+include_directories("${CMAKE_SOURCE_DIR}/wally")
+
 add_subdirectory(src)
 
 # Adds Qaterial hot reload to main executable
