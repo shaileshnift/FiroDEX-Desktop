@@ -277,7 +277,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
 
-          ./ci_tools_atomic_dex build ${{ matrix.type }}
+          ./ci_tools_atomic_dex build ${{ matrix.type }} --extra-cxxflags="-I/usr/local/include"
           ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
 
