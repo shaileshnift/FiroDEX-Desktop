@@ -15,7 +15,8 @@
  ******************************************************************************/
 
 #pragma once
-
+#include <string>
+#include <optional> // <-- Add this line if it is missing
 #include <string>
 #include <nlohmann/json_fwd.hpp>
 
