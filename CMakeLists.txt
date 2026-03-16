@@ -17,7 +17,7 @@ message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 ##! Force CMake to use modern C++17 across the entire project (Fixes std::optional)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 
 ##! Disable Doctest's POSIX signal handling to bypass the SIGSTKSZ bug on modern Linux
 add_compile_definitions(DOCTEST_CONFIG_NO_POSIX_SIGNALS)
