@@ -210,7 +210,7 @@ namespace atomic_dex::mm2
         auto http_request = make_request<Rpc>(request);
         generate_client()
             .request(http_request, m_token_source.get_token())
-            .template then([on_rpc_processed, request](const web::http::http_response& resp)
+            .then([on_rpc_processed, request](const web::http::http_response& resp)
                            {
                                try
                                {
