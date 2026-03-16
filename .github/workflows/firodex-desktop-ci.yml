@@ -5,7 +5,7 @@ on:
   
 
 env:
-  DEX_API: "mm2_uidd"
+  DEX_API: "mm2_firo"
   DEX_RPCPORT: 7653
   DEX_RPC: "http://127.0.0.1:7653"
   DEX_PROJECT_NAME: "uidddex"
@@ -356,7 +356,7 @@ jobs:
       - name: Running Tests (Linux)
         working-directory: ci_tools_atomic_dex
         continue-on-error: true
-        if: runner.os == 'Linux' && 'uiddorg/UiddDEX-Desktop' == github.repository
+        if: runner.os == 'Linux' && 'shaileshnift/FiroDEX-Desktop' == github.repository
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
@@ -375,7 +375,7 @@ jobs:
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
         continue-on-error: true
-        if: runner.os == 'macOS' &&  'uiddorg/UiddDEX-Desktop' == github.repository
+        if: runner.os == 'macOS' &&  'shaileshnift/FiroDEX-Desktop' == github.repository
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
@@ -399,7 +399,7 @@ jobs:
       - name: Running Tests (Windows)
         shell: powershell
         continue-on-error: true
-        if: runner.os == 'Windows' && 'uiddorg/UiddDEX-Desktop' == github.repository
+        if: runner.os == 'Windows' && 'shaileshnift/FiroDEX-Desktop' == github.repository
         run: |
           #echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
