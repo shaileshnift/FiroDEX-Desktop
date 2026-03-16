@@ -31,8 +31,8 @@ namespace atomic_dex::mm2
     void from_json(const nlohmann::json& json, enable_eth_with_tokens_result_rpc& out)
     {
         out.current_block = json["current_block"];
-        out.eth_addresses_infos = json["eth_addresses_infos"].get<typeof(out.eth_addresses_infos)>();
-        out.erc20_addresses_infos = json["erc20_addresses_infos"].get<typeof(out.erc20_addresses_infos)>();
+        out.eth_addresses_infos = json["eth_addresses_infos"].get<decltype(out.eth_addresses_infos)>();
+        out.erc20_addresses_infos = json["erc20_addresses_infos"].get<decltype(out.erc20_addresses_infos)>();
     }
     
     void from_json(const nlohmann::json& json, enable_eth_with_tokens_result_rpc::derivation_method_t& out)
@@ -51,6 +51,6 @@ namespace atomic_dex::mm2
     {
         out.derivation_method = json["derivation_method"];
         out.pubkey = json["pubkey"];
-        out.balances = json["balances"].get<typeof(out.balances)>();
+        out.balances = json["balances"].get<decltype(out.balances)>();
     }
 }

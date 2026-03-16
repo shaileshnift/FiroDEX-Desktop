@@ -44,8 +44,8 @@ namespace atomic_dex::mm2
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc& out)
     {
         out.current_block = json["current_block"];
-        out.bch_addresses_infos = json["bch_addresses_infos"].get<typeof(out.bch_addresses_infos)>();
-        out.slp_addresses_infos = json["slp_addresses_infos"].get<typeof(out.slp_addresses_infos)>();
+        out.bch_addresses_infos = json["bch_addresses_infos"].get<decltype(out.bch_addresses_infos)>();
+        out.slp_addresses_infos = json["slp_addresses_infos"].get<decltype(out.slp_addresses_infos)>();
     }
     
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc::derivation_method_t& out)
@@ -64,6 +64,6 @@ namespace atomic_dex::mm2
     {
         out.derivation_method = json["derivation_method"];
         out.pubkey = json["pubkey"];
-        out.balances = json["balances"].get<typeof(out.balances)>();
+        out.balances = json["balances"].get<decltype(out.balances)>();
     }
 }
