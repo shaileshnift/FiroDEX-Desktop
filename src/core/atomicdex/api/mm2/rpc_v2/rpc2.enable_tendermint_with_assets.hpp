@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-
+#include <string>
+#include <optional> // <-- Add this line if it is missing
 #include "atomicdex/api/mm2/rpc.hpp"
 #include "atomicdex/api/mm2/balance_info.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"

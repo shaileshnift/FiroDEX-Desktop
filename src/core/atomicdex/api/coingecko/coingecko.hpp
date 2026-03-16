@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional> // <-- Add this line if it is missing
 #include <unordered_map>
 #include <vector>
 

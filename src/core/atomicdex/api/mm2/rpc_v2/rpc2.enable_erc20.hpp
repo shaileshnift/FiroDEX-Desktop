@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <optional> // <-- Add this line if it is missing
 
 #include <nlohmann/json_fwd.hpp> //> nlohmann::json
 #include "atomicdex/api/mm2/rpc.hpp"

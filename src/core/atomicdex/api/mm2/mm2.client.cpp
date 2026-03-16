@@ -17,7 +17,8 @@
 #include <filesystem>
 
 #include <meta/detection/detection.hpp>
-
+#include <string>
+#include <optional> // <-- Add this line if it is missing
 #include "mm2.hpp"
 #include "atomicdex/api/mm2/rpc.hpp"
 #include "mm2.client.hpp"

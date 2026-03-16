@@ -16,7 +16,8 @@
 
 //! Deps
 #include <boost/algorithm/string/case_conv.hpp>
-
+#include <string>
+#include <optional> // <-- Add this line if it is missing
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.convertaddress.hpp"

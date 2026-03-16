@@ -18,7 +18,8 @@
 
 //! STD
 #include <unordered_set>
-
+#include <string>
+#include <optional> // <-- Add this line if it is missing
 //! Deps
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <nlohmann/json.hpp>

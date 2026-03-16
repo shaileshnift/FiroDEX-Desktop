@@ -2,7 +2,7 @@
 // Author(s): syl
 
 #include <string>
-
+#include <optional> // <-- Add this line if it is missing
 #include "atomicdex/api/mm2/paging_options.hpp"
 #include "atomicdex/api/mm2/transaction.data.hpp"
 #include "atomicdex/api/mm2/rpc.hpp"
